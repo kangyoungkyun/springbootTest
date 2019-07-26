@@ -3,6 +3,7 @@ package com.example.demo.domain;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 //테이블이 자동으로 만들어진다.
@@ -11,10 +12,10 @@ import javax.persistence.Id;
 public class User {
 
 	@Id						//pk
-	@GeneratedValue			//자동증가
-	private Long id;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)			//자동증가
+	private int id;
 	
-	@Column(nullable=false, length = 20)	//널값 방지
+	@Column	//널값 허용
 	private String userId;	
 	
 	private String password;
