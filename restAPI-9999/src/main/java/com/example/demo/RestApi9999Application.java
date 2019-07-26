@@ -3,6 +3,7 @@ package com.example.demo;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+
 @SpringBootApplication
 public class RestApi9999Application {
 
@@ -10,6 +11,7 @@ public class RestApi9999Application {
 		SpringApplication.run(RestApi9999Application.class, args);
 		
 		System.out.print("RestApi9999Application start");
+		
 	}
 
 }
