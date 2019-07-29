@@ -15,7 +15,7 @@ public class User {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)			//자동증가
 	private int id;
 	
-	@Column(nullable=false, length = 20)	//널값 허용
+	@Column(nullable=false, length = 20, unique = true)	//널값 허용
 	private String userId;	
 	
 	private String password;
@@ -41,6 +41,9 @@ public class User {
 	
 	
 	
+	public int getId() {
+		return id;
+	}
 	public String getUserId() {
 		return userId;
 	}

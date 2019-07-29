@@ -59,13 +59,28 @@ public class UserController {
 	}
 	
 	
-	//수정하기/ 폼
+	//수정하기/ 폼 + 세션 체크 
 	@GetMapping("/{id}/form")
-	public String updateForm(@PathVariable Integer id, Model model) {
+	public String updateForm(@PathVariable Integer id, Model model,HttpSession session) {
+		
+		//로그인 안되어 있으면 가입 폼으로 이동
+		Object obj = session.getAttribute("user");
+		if(obj == null) {
+			return "redirect:/users/form";
+		}
+		
+		//자신이 아닐 경우 에러 메시지 던지기
+		User sessionedUser = (User)obj;
+		if(!id.equals(sessionedUser.getId())) {
+			System.out.println("자신의 정보만 수정할 수 있습니다.");
+			throw new IllegalStateException("you can't update another users's data!!");
+		}
+		
 		System.out.println("수정하기");
 		System.out.println(id);
 		System.out.println(id instanceof Integer);
-		User user = userRepository.findById(id);
+		
+		User user = userRepository.findById(sessionedUser.getId());
 		
 		System.out.println(user);
 		
@@ -75,8 +90,22 @@ public class UserController {
 	
 	//수정하기/DB 추가
 	@PutMapping("/{id}")
-	public String update(@PathVariable Integer id, User newUser) {
-		User user = userRepository.findById(id);
+	public String update(@PathVariable Integer id, User newUser,HttpSession session) {
+		
+		//로그인 안되어 있으면 가입 폼으로 이동
+				Object obj = session.getAttribute("user");
+				if(obj == null) {
+					return "redirect:/users/form";
+				}
+				
+				//자신이 아닐 경우 에러 메시지 던지기
+				User sessionedUser = (User)obj;
+				if(!id.equals(sessionedUser.getId())) {
+					System.out.println("자신의 정보만 수정할 수 있습니다.");
+					throw new IllegalStateException("you can't update another users's data!!");
+				}
+		
+		User user = userRepository.findById(sessionedUser.getId());
 		user.update(newUser);
 		userRepository.save(user); //기존에 있으면 업데이트 , 없으면 추가
 		
