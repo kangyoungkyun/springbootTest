@@ -38,13 +38,14 @@ public class UserController {
 	}
 	
 	
-	//가입
+	//가입 + session
 	@PostMapping("")
-	public String create(User user) {
+	public String create(User user,HttpSession session) {
 		System.out.print(user);
 		//사용자 추가하기
 		//users.add(user); //기존의 것
 		userRepository.save(user); //jpa 라이브러리를 통해서 db저장
+		session.setAttribute("user", user);
 		return "redirect:/users";
 	}
 	
@@ -59,21 +60,23 @@ public class UserController {
 	
 	
 	//수정하기/ 폼
-	@GetMapping("/{userId}/form")
-	public String updateForm(@PathVariable Long userId, Model model) {
+	@GetMapping("/{id}/form")
+	public String updateForm(@PathVariable Integer id, Model model) {
 		System.out.println("수정하기");
-		System.out.println(userId);
-		User user = userRepository.findById(userId).get();
+		System.out.println(id);
+		System.out.println(id instanceof Integer);
+		User user = userRepository.findById(id);
 		
 		System.out.println(user);
-		model.addAttribute("user", user);
+		
+		model.addAttribute("userModify", user);
 		return "user/updateForm";
 	}
 	
 	//수정하기/DB 추가
 	@PutMapping("/{id}")
-	public String update(@PathVariable Long id, User newUser) {
-		User user = userRepository.findById(id).get();
+	public String update(@PathVariable Integer id, User newUser) {
+		User user = userRepository.findById(id);
 		user.update(newUser);
 		userRepository.save(user); //기존에 있으면 업데이트 , 없으면 추가
 		
@@ -115,7 +118,12 @@ public class UserController {
 	
 	
 	
-	
+	//logout
+	@GetMapping("/logout")
+	public String logout(HttpSession session) {
+		session.removeAttribute("user");
+		return "redirect:/";
+	}
 	
 	
 	
