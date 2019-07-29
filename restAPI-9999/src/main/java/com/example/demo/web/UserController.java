@@ -4,6 +4,8 @@ package com.example.demo.web;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -77,6 +79,45 @@ public class UserController {
 		
 		return "redirect:/users";
 	}
+	
+	//login폼 이동
+	@GetMapping("/loginForm")
+	public String loginForm() {
+		
+		return "user/login";
+	}
+	
+	
+	
+	//login + SESSION 에 저장
+	@PostMapping("/login")
+	public String login(String userId, String password ,HttpSession session) {
+		
+		//id 로 조회
+		User user = userRepository.findByUserId(userId);
+		
+		//가입한 사람이 X
+		if(user == null) {
+			System.out.println("login fail");
+			return "redirect:/users/loginForm";
+		}
+		
+		//비밀번호가 다를때
+		if(!password.equals(user.getPassword())) {
+			System.out.println("login fail");
+			return "redirect:/users/loginForm";
+		}
+		
+		System.out.println("login success");		
+		session.setAttribute("user", user);
+		return "redirect:/";
+	}
+	
+	
+	
+	
+	
+	
 	
 	
 }

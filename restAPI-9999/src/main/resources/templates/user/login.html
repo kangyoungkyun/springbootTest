@@ -22,32 +22,28 @@
   <!-- 네비게이션 중복 제거 -->
 {{> /include/navigation}}
   
-    <h1>사용자 리스트</h1>
+    <h1>로그인</h1>
+    
+  <div class=  "container">
+  <form action="/users/login" method="post">
+  <div class="form-group">
+    <label for="exampleInputEmail1">Id</label>
+    <input type="userId" class="form-control" name = "userId" id="userId" placeholder="id">
+  </div>
+  
+  <div class="form-group">
+    <label for="password">Password</label>
+    <input type="password" class="form-control" name = "password" id="password" placeholder="password">
+  </div>
+  
 
 
-<table class="table">
-  <thead>
-    <tr>
-    <th scope="col">#</th>
-      <th scope="col">아이디</th>
-      <th scope="col">이름</th>
-      <th scope="col">이메일</th>
-     
-    </tr>
-  </thead>
-  <tbody>
-  {{#users}}
-    <tr>
-    <th scope="row">{{id}}</th>
-      <th scope="row">{{userId}}</th>
-      <td>{{name}}</td>
-      <td>{{email}}</td>
-      <td><a href="/users/{{id}}/form" class="btn btn-success" role="button">수정</a></td>
-    </tr>
-  {{/users}}
-  </tbody>
-</table>
+  <button type="submit" class="btn btn-default">로그인</button>
+</form>
+ </div>
 
 {{> /include/footer}}
+
+
   </body>
 </html>

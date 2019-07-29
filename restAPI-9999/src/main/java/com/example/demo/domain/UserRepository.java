@@ -11,5 +11,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UserRepository extends JpaRepository<User,Long>{
 
+	//로그인 할때 user ID 찾기 : userId를 기반으로 user 데이터를 조회할 수 있다.
+	User findByUserId(String userId);
 
 }
