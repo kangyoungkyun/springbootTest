@@ -45,7 +45,7 @@ public class UserController {
 		//사용자 추가하기
 		//users.add(user); //기존의 것
 		userRepository.save(user); //jpa 라이브러리를 통해서 db저장
-		session.setAttribute("user", user);
+		session.setAttribute(HttpSessionUtil.USER_SESSION_KEY, user);
 		return "redirect:/users";
 	}
 	
@@ -64,13 +64,22 @@ public class UserController {
 	public String updateForm(@PathVariable Integer id, Model model,HttpSession session) {
 		
 		//로그인 안되어 있으면 가입 폼으로 이동
-		Object obj = session.getAttribute("user");
-		if(obj == null) {
+		//Object obj = session.getAttribute(HttpSessionUtil.USER_SESSION_KEY);
+		//if(obj == null) {
+		//	return "redirect:/users/form";
+		//}
+		
+		// - 객체 지향으로 변경: 객체에게 비번이 다른지 체크요청
+		if(!HttpSessionUtil.isLoginUser(session)) {
 			return "redirect:/users/form";
 		}
 		
+		
 		//자신이 아닐 경우 에러 메시지 던지기
-		User sessionedUser = (User)obj;
+		//User sessionedUser = (User)obj;
+		
+		User sessionedUser	= HttpSessionUtil.getUserFromSession(session);
+		
 		if(!id.equals(sessionedUser.getId())) {
 			System.out.println("자신의 정보만 수정할 수 있습니다.");
 			throw new IllegalStateException("you can't update another users's data!!");
@@ -93,7 +102,7 @@ public class UserController {
 	public String update(@PathVariable Integer id, User newUser,HttpSession session) {
 		
 		//로그인 안되어 있으면 가입 폼으로 이동
-				Object obj = session.getAttribute("user");
+				Object obj = session.getAttribute(HttpSessionUtil.USER_SESSION_KEY);
 				if(obj == null) {
 					return "redirect:/users/form";
 				}
@@ -134,14 +143,21 @@ public class UserController {
 			return "redirect:/users/loginForm";
 		}
 		
-		//비밀번호가 다를때
-		if(!password.equals(user.getPassword())) {
+		//비밀번호가 다를때 - 기존
+//		if(!password.equals(user.getPassword())) {
+//			System.out.println("login fail");
+//			return "redirect:/users/loginForm";
+//		}
+		
+		//비밀번호가 다를때 - 객체 지향으로 변경: 객체에게 비번이 다른지 체크요청
+		//getPassword () 메소드를 사용하는것이 아니라 .. 다른 커스텀 메소드 사용.
+		if(user.matchPassword(password)) {
 			System.out.println("login fail");
 			return "redirect:/users/loginForm";
 		}
 		
 		System.out.println("login success");		
-		session.setAttribute("user", user);
+		session.setAttribute(HttpSessionUtil.USER_SESSION_KEY, user);
 		return "redirect:/";
 	}
 	
@@ -150,7 +166,7 @@ public class UserController {
 	//logout
 	@GetMapping("/logout")
 	public String logout(HttpSession session) {
-		session.removeAttribute("user");
+		session.removeAttribute(HttpSessionUtil.USER_SESSION_KEY);
 		return "redirect:/";
 	}
 	

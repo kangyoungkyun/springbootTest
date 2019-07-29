@@ -65,6 +65,15 @@ public class User {
 		this.email = newUser.email;
 		
 	}
+	
+	//비밀번호 비교
+	public boolean matchPassword(String newPassword) {
+		if(newPassword == null) {
+			return false;
+		}
+		return newPassword.equals(password);
+	}
+	
 	@Override
 	public String toString() {
 		return "User [userId=" + userId + ", password=" + password + ", name=" + name + ", email=" + email + "]";
