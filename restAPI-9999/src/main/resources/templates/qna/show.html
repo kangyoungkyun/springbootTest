@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
@@ -22,31 +22,31 @@
   <!-- 네비게이션 중복 제거 -->
 {{> /include/navigation}}
   
-    <h1>메인</h1>
-
-
-<table class="table">
-  <thead>
-    <tr>
-    <th scope="col">#</th>
-      <th scope="col">이름</th>
-      <th scope="col">제목</th>
-      <th scope="col">내용</th>
-      <th scope="col">일시</th>
-    </tr>
-  </thead>
-  <tbody>
+    <h1>질문보기</h1>
+    
+  <div class=  "container">
+  
   {{#question}}
-    <tr>
-    <th scope="row">#</th>
-      <th scope="row">{{writer.name}}</th>
-      <td><a href="/questions/{{id}}">{{title}}</a></td>
-      <td>{{contents}}</td>
-      <td>{{formattedCreatDate}}</td>
-    </tr>
-  {{/question}}
-  </tbody>
-</table>
+  
+  <form action="/questions" method="post">
+
+  
+  <div class="form-group">
+    <label for="title">제목</label>
+    <input type="title" class="form-control" name = "title" id="title" placeholder="title" value={{title}}>
+  </div>
+  
+  <div class="form-group">
+    <label for="contents">내용</label>
+    <input type="contents" class="form-control" id="contents" name = "contents" placeholder="contents" value={{contents}}>
+  </div>
+
+
+  <button type="submit" class="btn btn-default">수정하기</button>
+</form>
+{{/question}}
+
+ </div>
 
 {{> /include/footer}}
   </body>
