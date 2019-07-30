@@ -6,18 +6,18 @@ import java.time.format.DateTimeFormatter;
 import javax.persistence.Entity;
 import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.swing.text.DateFormatter;
+
 
 @Entity
 public class Question {
 
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-	
 	
 	
 	//질문에서 유저를 참조하게끔 질문(many) : 유저(one)    

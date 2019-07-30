@@ -6,24 +6,24 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-//테이블이 자동으로 만들어진다.
-
+//서버가 시작 할때 테이블 관련 어노테이션을 읽어서 테이블을 자동으로 만들어준다.
+//서버 설정 파일은 application.propertis 파일 참고
 @Entity
 public class User {
 
-	@Id						//pk
-	@GeneratedValue(strategy = GenerationType.IDENTITY)			//자동증가
-	private int id;
+	@Id														//pk 어노테이션
+	@GeneratedValue(strategy = GenerationType.AUTO)			//자동증가
+	private Long id;
 	
-	@Column(nullable=false, length = 20, unique = true)	//널값 허용
-	private String userId;	
+	@Column(nullable=false, length = 20, unique = true)		//칼럼 설정
+	private String userId;									//회원 아이디
+
+	private String password;								//비번
+	private String name;									//이름
+	private String email;									//이메일
 	
-	private String password;
-	private String name;
-	private String email;
 	
-	
-	
+	//setter
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
@@ -37,11 +37,9 @@ public class User {
 		this.email = email;
 	}
 	
+	//getter
 	
-	
-	
-	
-	public int getId() {
+	public Long getId() {
 		return id;
 	}
 	public String getUserId() {
@@ -57,16 +55,15 @@ public class User {
 		return email;
 	}
 	
-	
-	//회원 업데이트
+
+	//회원 정보 업데이트 처리  함수
 	public void update(User newUser) {
 		this.password = newUser.password;
 		this.name = newUser.name;
 		this.email = newUser.email;
-		
 	}
 	
-	//비밀번호 비교
+	//회원 비밀번호 비교 처리 함수
 	public boolean matchPassword(String newPassword) {
 		if(newPassword == null) {
 			return false;

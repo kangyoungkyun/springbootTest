@@ -20,6 +20,7 @@ import com.example.demo.domain.UserRepository;
 
 @Controller					//controller 선언
 @RequestMapping("/users")	//대표 url
+//USER 관련 컨트롤러
 public class UserController {
 
 	//빈객체 : ui 에서 url 로 넘어온 key 값과 데이터 value 값을 담을 객체
@@ -36,7 +37,6 @@ public class UserController {
 	public String form() {
 		return "/user/form";
 	}
-	
 	
 	//가입 + session
 	@PostMapping("")
@@ -61,7 +61,7 @@ public class UserController {
 	
 	//수정하기/ 폼 + 세션 체크 
 	@GetMapping("/{id}/form")
-	public String updateForm(@PathVariable Integer id, Model model,HttpSession session) {
+	public String updateForm(@PathVariable Long id, Model model,HttpSession session) {
 		
 		//로그인 안되어 있으면 가입 폼으로 이동
 		//Object obj = session.getAttribute(HttpSessionUtil.USER_SESSION_KEY);
@@ -85,21 +85,15 @@ public class UserController {
 			throw new IllegalStateException("you can't update another users's data!!");
 		}
 		
-		System.out.println("수정하기");
-		System.out.println(id);
-		System.out.println(id instanceof Integer);
-		
-		User user = userRepository.findById(sessionedUser.getId());
-		
-		System.out.println(user);
+		User user = userRepository.findById(id).get();
 		
 		model.addAttribute("userModify", user);
 		return "user/updateForm";
 	}
 	
-	//수정하기/DB 추가
+	//수정하기 ACTION /DB 추가
 	@PutMapping("/{id}")
-	public String update(@PathVariable Integer id, User newUser,HttpSession session) {
+	public String update(@PathVariable Long id, User newUser,HttpSession session) {
 		
 		//로그인 안되어 있으면 가입 폼으로 이동
 				Object obj = session.getAttribute(HttpSessionUtil.USER_SESSION_KEY);
@@ -114,7 +108,7 @@ public class UserController {
 					throw new IllegalStateException("you can't update another users's data!!");
 				}
 		
-		User user = userRepository.findById(sessionedUser.getId());
+		User user = userRepository.findById(id).get();
 		user.update(newUser);
 		userRepository.save(user); //기존에 있으면 업데이트 , 없으면 추가
 		
@@ -127,7 +121,6 @@ public class UserController {
 		
 		return "user/login";
 	}
-	
 	
 	
 	//login + SESSION 에 저장

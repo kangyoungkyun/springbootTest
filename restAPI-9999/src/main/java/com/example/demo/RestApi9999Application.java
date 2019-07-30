@@ -10,7 +10,7 @@ public class RestApi9999Application {
 	public static void main(String[] args) {
 		SpringApplication.run(RestApi9999Application.class, args);
 		
-		System.out.print("RestApi9999Application start");
+		System.out.print("Test Project start!");
 		
 	}
 
