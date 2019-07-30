@@ -44,7 +44,8 @@ public class QuestionController {
 		}
 		
 		User sessionUser = HttpSessionUtil.getUserFromSession(session);
-		Question newQuestion = new Question(sessionUser.getName(), title, contents);
+		//객체에서 데이터 꺼내기 x, 객체를 전달하게끔 코딩하라
+		Question newQuestion = new Question(sessionUser, title, contents);
 		questionRepository.save(newQuestion);
 		
 		return "redirect:/";
