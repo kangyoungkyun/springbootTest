@@ -6,13 +6,17 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import org.hibernate.annotations.DynamicUpdate;
+
 //서버가 시작 할때 테이블 관련 어노테이션을 읽어서 테이블을 자동으로 만들어준다.
 //서버 설정 파일은 application.propertis 파일 참고
+@DynamicUpdate
 @Entity
 public class User {
 
 	@Id														//pk 어노테이션
 	@GeneratedValue(strategy = GenerationType.AUTO)			//자동증가
+	@Column(name="id")
 	private Long id;
 	
 	@Column(nullable=false, length = 20, unique = true)		//칼럼 설정
@@ -70,11 +74,12 @@ public class User {
 		}
 		return newPassword.equals(password);
 	}
-	
 	@Override
 	public String toString() {
-		return "User [userId=" + userId + ", password=" + password + ", name=" + name + ", email=" + email + "]";
+		return "User [id=" + id + ", userId=" + userId + ", password=" + password + ", name=" + name + ", email="
+				+ email + "]";
 	}
+	
 
 	
 	

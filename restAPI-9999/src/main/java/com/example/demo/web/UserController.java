@@ -155,7 +155,6 @@ public class UserController {
 	}
 	
 	
-	
 	//logout
 	@GetMapping("/logout")
 	public String logout(HttpSession session) {
